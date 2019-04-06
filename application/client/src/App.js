@@ -4,13 +4,14 @@ import ChatWindow from './Components/ChatWindow';
 import io from "socket.io-client";
 
 class App extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       clients: null,
       currentClient: null,
       currentClientPartner: null,
       socketConnected: false,
+      chatMessages: [],
     };
     
     this.socket = null;
@@ -21,15 +22,26 @@ class App extends Component {
     this.socket = io(this.endpoint);
     this.socket.on('socket connection', this.handleSocketConnection)
     this.socket.on('initial state', this.handleInitialState)
+    this.socket.on('register self', this.setCurrentClient)
     this.socket.on('client joined', this.handleClientJoined)
     this.socket.on('chat user found', this.setClientPartner)
-    this.socket.on('register self', this.setCurrentClient)
+    this.socket.on('incoming message', this.receiveMessage)
   }
 
   handleInitialState = (initialState) => {
     this.setState({
       clients: initialState,
     })
+  }
+
+  receiveMessage = (message) => {
+    this.setState({
+      chatMessages: this.state.chatMessages.concat(message)
+    });
+  }
+
+  sendMessage = (message) => {
+    this.socket.emit('send message', message);
   }
 
   handleSocketConnection = () => {
@@ -66,6 +78,9 @@ class App extends Component {
             handleSubmit={this.handleNewUser} />
           : <ChatWindow
               chatPartner={this.state.currentClientPartner}
+              currentClient={this.state.currentClient}
+              sendMessage={this.sendMessage}
+              chatMessages={this.state.chatMessages}
               clients={this.state.clients} />
         }
       </div>

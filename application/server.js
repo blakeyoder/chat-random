@@ -34,12 +34,20 @@ io.on('connection', (socket) => {
 
   socket.on('request to chat', () => {
     const partner = findChatPartner(socket);
-    // set current socket client's partner
     if (partner) {
       socket.currentClient.setChatPartner(partner.socketId);
       socket.emit('chat user found', partner);
       io.to(partner.socketId).emit('chat user found', socket.currentClient);
     }
+  })
+
+  socket.on('send message', (message) => {
+    const messageObj = {
+      message,
+      username: socket.currentClient.username,
+    }
+    io.to(socket.currentClient.partnerId).emit('incoming message', {...messageObj});
+    socket.emit('incoming message', {...messageObj});
   })
 
 });

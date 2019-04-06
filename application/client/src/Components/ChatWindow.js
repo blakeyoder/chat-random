@@ -1,14 +1,21 @@
 import React, {Component} from "react";
+import MessageWindow from './MessageWindow';
+import Loader from 'react-loader-spinner';
 
 export default class ChatWindow extends Component {
   render() {
-    const {clients} = this.props;
+    const {clients, currentClient} = this.props;
     return (
       <div>
-        <h1>{clients.length} Users in Chat</h1>
+        <p>{clients.length} Users in Forum</p>
+        <h1>Welcome, {currentClient.currentClient.username}</h1>
         {this.props.chatPartner
-            ? <h2>Partner is {this.props.chatPartner.username}</h2>
-            : <h2>Waiting for partner...you will be automatically assigned</h2>}
+            ? 
+            <div>
+              <h2>Chatting with, {this.props.chatPartner.username}</h2>
+              <MessageWindow {...this.props} />
+            </div>
+          : <h2>Waiting for partner, you will be automatically assigned <Loader type="ThreeDots" /></h2>}
       </div>
     )
   }

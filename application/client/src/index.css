@@ -8,9 +8,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+#root {
+  display: flex;
+  justify-content: center;
 }
 
 blockquote {
@@ -20,10 +20,6 @@ blockquote {
 
 p {
   margin: 0 0 0.5em;
-  border-radius: 1em;
   padding: 0.5em 1em;
   background: #e5e5ea;
-  max-width: 75%;
-  clear: both;
-  position: relative;
 }

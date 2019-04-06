@@ -10,7 +10,6 @@ export default class WelcomeScreen extends Component {
     };    
   }
 
-
   handleInput = (e) => {
     this.setState({
       [e.target.name]: e.target.value,
