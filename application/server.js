@@ -38,14 +38,19 @@ io.on('connection', (socket) => {
   })
 
   socket.on('request new chat', () => {
+    const {partnerId} = socket.currentClient;
     // filter out revoked socket id
-    const clientWhiteList = clients.filter((client) => client.socketId !== socket.currentClient.partnerId);
+    const clientWhiteList = clients.filter((client) => client.socketId !== partnerId);
+    // revoke partnership with partner
+    io.to(partnerId).emit('chat user found', null);
     // null out current clients partner id
+    const partner = clients.find((client) => client.socketId === partnerId);
+    partner.resetChatPartner();
     socket.currentClient.resetChatPartner();
-    const partner = findChatPartner(clientWhiteList, socket);
-    if (partner) {
-      assignPartner(socket, partner);
-    }
+    const newPartner = findChatPartner(clientWhiteList, socket);
+    if (newPartner) {
+      assignPartner(socket, newPartner);
+    } else socket.emit('chat user found', null);
   });
 
   socket.on('send message', (message) => {

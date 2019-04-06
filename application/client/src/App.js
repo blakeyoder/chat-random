@@ -62,7 +62,9 @@ class App extends Component {
           this.socket.emit('send message', parsedMessage.join(' '));
         }, delay)
       } else if (command === '/hop') {
-        this.socket.emit('request new chat')
+        this.setState({
+          messages: [],
+        }, () => this.socket.emit('request new chat'))
       };
     }
   }
