@@ -1,6 +1,7 @@
 const express = require('express')
 const http = require('http')
 const socketIO = require('socket.io')
+const SocketClient = require('./SocketClient')
 const port = 4001
 const app = express()
 const server = http.createServer(app)
@@ -16,16 +17,14 @@ io.on('connection', (socket) => {
   socket.emit('initial state', {clients});
 
   socket.on('add client', (username) => {
-    const currentClient = {
+    const currentClient = new SocketClient({
       socketId: socket.id,
       partnerId: null,
       username,
-    };
-    clients = clients.concat({...currentClient});
+    });
+    clients = clients.concat(currentClient);
     // send message to all connected clients
-    io.sockets.emit('client joined', {
-      clients,
-    })
+    io.sockets.emit('client joined', {clients,})
     // register to socket as well
     socket.currentClient = currentClient;
     socket.emit('register self', {
@@ -35,22 +34,24 @@ io.on('connection', (socket) => {
 
   socket.on('request to chat', () => {
     const partner = findChatPartner(socket);
+    // set current socket client's partner
     if (partner) {
-      socket.emit('chat user found', findChatPartner(socket));
+      socket.currentClient.setChatPartner(partner.socketId);
+      socket.emit('chat user found', partner);
       io.to(partner.socketId).emit('chat user found', socket.currentClient);
     }
   })
 
 });
 
-function clientHasPartner(client) {
-
-};
-
 function findChatPartner(socket) {
   // get first available client to chat
   if (socket.currentClient.partnerId) return null;
   return clients.find((client) => {
-    if (!client.partnerId && socket.id !== client.socketId) return client;
+    if (!client.partnerId && socket.id !== client.socketId) {
+      // set current socket client id on partners
+      client.setChatPartner(socket.currentClient.socketId);
+      return client;
+    };
   });
 };
