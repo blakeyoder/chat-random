@@ -1,0 +1,13 @@
+{
+  "name": "chat-random",
+  "version": "1.0.0",
+  "description": "Real time chat app",
+  "main": "index.js",
+  "repository": "git@github.com:blakeyoder/chat-random.git",
+  "author": "Blake Yoder <yoderblake@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.16.4",
+    "socket.io": "^2.2.0"
+  }
+}

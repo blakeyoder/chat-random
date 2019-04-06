@@ -1,0 +1,5 @@
+**/test/mocks/*.js
+**/*.bundle.js
+**/*.min.js
+vendor
+venv

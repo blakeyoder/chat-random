@@ -1,0 +1,4 @@
+**/*.css
+**/kss
+application/static/scss/_normalize.scss
+application/static/scss/bourbon
