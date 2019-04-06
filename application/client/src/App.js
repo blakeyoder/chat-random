@@ -3,6 +3,7 @@ import WelcomeScreen from './Components/WelcomeScreen';
 import ChatWindow from './Components/ChatWindow';
 import io from "socket.io-client";
 
+const WS_HOST = 'http://localhost:4001';
 class App extends Component {
   constructor(props) {
     super(props);
@@ -15,11 +16,10 @@ class App extends Component {
     };
     
     this.socket = null;
-    this.endpoint = 'http://localhost:4001';
   }
 
   componentDidMount = () => {
-    this.socket = io(this.endpoint);
+    this.socket = io(WS_HOST);
     this.socket.on('socket connection', this.handleSocketConnection)
     this.socket.on('initial state', this.handleInitialState)
     this.socket.on('register self', this.setCurrentClient)
@@ -40,8 +40,31 @@ class App extends Component {
     });
   }
 
+  checkForCommand = (message) => {
+    // if a string starts with slash we assume its a command
+    if (message.startsWith('/')) {
+    }
+  }
+
   sendMessage = (message) => {
-    this.socket.emit('send message', message);
+    const hasCommand = message.startsWith('/');
+    if (!hasCommand) this.socket.emit('send message', message);
+    if (hasCommand) {
+      // searches string and returns first word
+      const command = message.replace(/ .*/,'');
+      if (command === '/delay') {
+        const parsedMessage = message.split(' ');
+        // get delay arg
+        const delay = parsedMessage[1];
+        // return message minus command args
+        parsedMessage.splice(0, 2);
+        setTimeout(() => {
+          this.socket.emit('send message', parsedMessage.join(' '));
+        }, delay)
+      } else if (command === '/hop') {
+        this.socket.emit('request new chat')
+      };
+    }
   }
 
   handleSocketConnection = () => {

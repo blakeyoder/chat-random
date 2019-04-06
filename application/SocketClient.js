@@ -12,6 +12,10 @@ class SocketClient {
   setChatPartner(id) {
     this.partnerId = id;
   }
+
+  resetChatPartner() {
+    this.partnerId = null;
+  }
 }
 
 module.exports = SocketClient;

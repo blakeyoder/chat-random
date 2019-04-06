@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import {preventDefault} from '../utils/dom';
 import './MessageWindow.css';
+import '../index.css';
 
 export default class MessageWindow extends Component {
   constructor(props) {
@@ -40,13 +41,20 @@ export default class MessageWindow extends Component {
           }
         </div>
         <form
+          className="app-form"
           onSubmit={preventDefault(this.sendMessage)}>
           <input
             type="text"
             name="message"
+            className="app-input"
+            autoFocus
             onChange={this.handleInput}
             value={this.state.message} />
-          <button type="submit">Send message</button>
+          <button 
+            type="submit"
+            className="app-button">
+            Send message
+          </button>
         </form>
       </React.Fragment>
     );

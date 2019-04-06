@@ -23,3 +23,32 @@ p {
   padding: 0.5em 1em;
   background: #e5e5ea;
 }
+
+.app-form {
+  display: flex;
+  justify-content: center;
+  height: 2rem;
+  margin-top: 1rem;
+}
+
+.app-input {
+  margin-right: 2rem;
+  border: none;
+  border-bottom: 2px solid black;
+  border-left: 2px solid black;
+  width: 100%;
+}
+
+.app-button {
+  background-color: transparent;
+  border: 1px solid black;
+  border-radius: 4px;
+  transition: 0.3s all ease-in;
+}
+
+.app-button:focus,
+.app-button:hover {
+  background-color: black;
+  color: white;
+  cursor: pointer;
+}
