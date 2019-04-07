@@ -1,4 +1,4 @@
-# chat-random
+# [Chat Random™](http://blakesnaps.s3.amazonaws.com/Af9Krgxb.gif)
 
 ![img](http://blakesnaps.s3.amazonaws.com/tNMAZVVl.png)
 
