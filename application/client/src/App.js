@@ -4,6 +4,7 @@ import ChatWindow from './Components/ChatWindow';
 import io from "socket.io-client";
 
 const WS_HOST = 'http://localhost:4001';
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -76,6 +77,7 @@ class App extends Component {
   setClientPartner = (client) => {
     this.setState({
       currentClientPartner: client,
+      chatMessages: [],
     });
   }
 

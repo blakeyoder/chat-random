@@ -12,7 +12,7 @@ export default class ChatWindow extends Component {
         {this.props.chatPartner
             ? 
             <div>
-              <h2>Chatting with, {this.props.chatPartner.username}</h2>
+              <h3>Chatting with, {this.props.chatPartner.username}</h3>
               <MessageWindow {...this.props} />
             </div>
           : <h2>Waiting for partner, you will be automatically assigned <Loader type="ThreeDots" /></h2>}
