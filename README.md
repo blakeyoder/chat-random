@@ -7,13 +7,13 @@ This application demonstrates a random chat app client implementing real-time me
 To get started, please follow the below instructions:
 ```
 $ git clone git@github.com:blakeyoder/chat-random.git
-$ cd application
+$ cd chat-random/application
 $ yarn install (this will install all server side dependencies)
 $ node server.js
 > Listening on port 4001
 
 Open up a new terminal tab
-$ cd application/client
+$ cd chat-random/application/client
 $ yarn install (this will install all client side dependencies)
 $ yarn start
 ```
