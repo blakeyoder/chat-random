@@ -9,3 +9,7 @@
 .self-message {
   background: white; 
 }
+
+.italicize {
+  font-style: italic;
+}

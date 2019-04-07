@@ -35,7 +35,7 @@ class App extends Component {
     })
   }
 
-  receiveMessage = (message) => {
+  receiveMessage = (message, command) => {
     this.setState({
       chatMessages: this.state.chatMessages.concat(message)
     });
@@ -53,8 +53,8 @@ class App extends Component {
     if (hasCommand) {
       // searches string and returns first word
       const command = message.replace(/ .*/,'');
+      const parsedMessage = message.split(' ');
       if (command === '/delay') {
-        const parsedMessage = message.split(' ');
         // get delay arg
         const delay = parsedMessage[1];
         // return message minus command args
@@ -66,7 +66,11 @@ class App extends Component {
         this.setState({
           chatMessages: [],
         }, () => this.socket.emit('request new chat'))
-      };
+      } else if (command === '/me') {
+        // return message minus command args
+        parsedMessage.splice(0, 1);
+        this.socket.emit('send message', parsedMessage.join(' '), 'me');
+      }
     }
   }
 

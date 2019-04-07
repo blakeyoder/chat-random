@@ -24,6 +24,17 @@ export default class MessageWindow extends Component {
     });
   }
 
+  determineClassName = (message, client) => {
+    let className = '';
+    if (message.username === client.username) {
+      className = `${className} self-message`;
+    }
+    if (message.command === 'me') {
+      className = `${className} italicize`;
+    }
+    return className;
+  }
+
   render() {
     const {currentClient} = this.props.currentClient;
     return (
@@ -32,7 +43,7 @@ export default class MessageWindow extends Component {
           {this.props.chatMessages.map((message, idx) => {
               return (
                 <p
-                  className={message.username === currentClient.username ? 'self-message' : ''}
+                  className={this.determineClassName(message, currentClient)}
                   key={idx}>
                   {message.username}: {message.message}
                 </p>

@@ -52,10 +52,11 @@ io.on('connection', (socket) => {
     } else socket.emit('chat user found', null);
   });
 
-  socket.on('send message', (message) => {
+  socket.on('send message', (message, command=null) => {
     socket.currentClient.emitMessage.call(socket, io, clients, {
       message,
       username: socket.currentClient.username,
+      command,
     });
   })
 });
