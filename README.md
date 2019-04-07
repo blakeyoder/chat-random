@@ -21,5 +21,5 @@ $ yarn start
 Once the server and client are running, you will need to create a chat instance in atleast _2_ tabs in order for the chat window to connect.
 
 Once in a chat, you have 2 commands at your disposal
-1. `/delay <MS_DELAY> <MESSAGE>` will send your message on the `<MS_DELAY>` interval
+1. `/delay <MS_DELAY> <MESSAGE>` will send your message on the `<MS_DELAY>` timeout
 2. `/hop` will continue onto the next user in the chat if one is available
