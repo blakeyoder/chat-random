@@ -36,6 +36,10 @@ io.on('connection', (socket) => {
     }
   })
 
+  socket.on('client chatting', (isTyping) => {
+    socket.currentClient.emitTyping.call(socket, io, isTyping);
+  })
+
   socket.on('request new chat', () => {
     const {partnerId} = socket.currentClient;
     // filter out revoked socket id

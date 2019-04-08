@@ -1,6 +1,6 @@
 import React, {Component} from "react";
-import WelcomeScreen from './Components/WelcomeScreen';
-import ChatWindow from './Components/ChatWindow';
+import WelcomeScreen from './components/WelcomeScreen';
+import ChatWindow from './components/ChatWindow';
 import io from "socket.io-client";
 
 const WS_HOST = 'http://localhost:4001';
@@ -13,6 +13,7 @@ class App extends Component {
       currentClient: null,
       currentClientPartner: null,
       socketConnected: false,
+      partnerTyping: false,
       chatMessages: [],
     };
     
@@ -21,12 +22,13 @@ class App extends Component {
 
   componentDidMount = () => {
     this.socket = io(WS_HOST);
-    this.socket.on('socket connection', this.handleSocketConnection)
-    this.socket.on('initial state', this.handleInitialState)
-    this.socket.on('register self', this.setCurrentClient)
-    this.socket.on('client joined', this.handleClientJoined)
-    this.socket.on('chat user found', this.setClientPartner)
-    this.socket.on('incoming message', this.receiveMessage)
+    this.socket.on('socket connection', this.handleSocketConnection);
+    this.socket.on('initial state', this.handleInitialState);
+    this.socket.on('register self', this.setCurrentClient);
+    this.socket.on('client joined', this.handleClientJoined);
+    this.socket.on('chat user found', this.setClientPartner);
+    this.socket.on('incoming message', this.receiveMessage);
+    this.socket.on('partner typing', this.handlePartnerTyping);
   }
 
   handleInitialState = (initialState) => {
@@ -37,14 +39,9 @@ class App extends Component {
 
   receiveMessage = (message, command) => {
     this.setState({
-      chatMessages: this.state.chatMessages.concat(message)
+      chatMessages: this.state.chatMessages.concat(message),
+      partnerTyping: false,
     });
-  }
-
-  checkForCommand = (message) => {
-    // if a string starts with slash we assume its a command
-    if (message.startsWith('/')) {
-    }
   }
 
   sendMessage = (message) => {
@@ -99,6 +96,13 @@ class App extends Component {
     this.socket.emit('add client', username);
   }
 
+  handleClientTyping = (val) => {
+    if (val) return this.socket.emit('client chatting', true);
+    return this.socket.emit('client chatting', false);
+  }
+
+  handlePartnerTyping = (val) => this.setState({partnerTyping: val});
+
   render() {
     return (
       <div>
@@ -112,6 +116,8 @@ class App extends Component {
               currentClient={this.state.currentClient}
               sendMessage={this.sendMessage}
               chatMessages={this.state.chatMessages}
+              handleClientTyping={this.handleClientTyping}
+              partnerTyping={this.state.partnerTyping}
               clients={this.state.clients} />
         }
       </div>

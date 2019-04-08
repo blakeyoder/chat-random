@@ -13,3 +13,13 @@
 .italicize {
   font-style: italic;
 }
+
+.message-typing {
+  bottom: 0;
+  display: flex;
+  font-style: italic;
+}
+
+.typing-static-message {
+  margin-right: 0.5rem;
+}

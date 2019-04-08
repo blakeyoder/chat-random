@@ -30,6 +30,10 @@ class SocketClient {
     this.emit('incoming message', {...message});
   }
 
+  emitTyping(io, isTyping) {
+    io.to(this.currentClient.partnerId).emit('partner typing', isTyping);
+  }
+
   static assignPartner(io, socket, partner) {
     socket.currentClient.setChatPartner(partner.socketId);
     socket.emit('chat user found', partner);

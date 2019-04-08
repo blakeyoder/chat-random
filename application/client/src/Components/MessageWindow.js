@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import {preventDefault} from '../utils/dom';
+import Loader from 'react-loader-spinner';
 import './MessageWindow.css';
 import '../index.css';
 
@@ -12,9 +13,15 @@ export default class MessageWindow extends Component {
   }
 
   handleInput = (e) => {
+    const value = e.target.value;
     this.setState({
-      [e.target.name]: e.target.value,
-    })
+      [e.target.name]: value,
+    }, () => this.handleClientTyping(value));
+  }
+
+  handleClientTyping = (val) => {
+    if (!!val) return this.props.handleClientTyping(true);
+    return this.props.handleClientTyping(false);
   }
 
   sendMessage = () => {
@@ -51,6 +58,12 @@ export default class MessageWindow extends Component {
             })
           }
         </div>
+        {this.props.partnerTyping && 
+          <div className="message-typing">
+            <span className="typing-static-message">Partner is typing</span>
+            <Loader type="ThreeDots" width={20} height={10} />
+          </div>
+        }
         <form
           className="app-form"
           onSubmit={preventDefault(this.sendMessage)}>
